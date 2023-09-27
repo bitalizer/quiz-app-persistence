@@ -1,0 +1,33 @@
+CREATE TABLE IF NOT EXISTS topics (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY, 
+  name VARCHAR(255) NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS questions (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY, 
+  difficulty INT NOT NULL, 
+  content VARCHAR(1000) NOT NULL, 
+  topic_id BIGINT, 
+  FOREIGN KEY (topic_id) REFERENCES Topics(id)
+);
+
+CREATE TABLE IF NOT EXISTS responses (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY, 
+  question_id BIGINT NOT NULL, 
+  correct BOOLEAN NOT NULL, 
+  text VARCHAR(255) NOT NULL,
+  FOREIGN KEY (question_id) REFERENCES questions(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS quizzes (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY, 
+  name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS quiz_question (
+    quiz_id BIGINT NOT NULL,
+    question_id BIGINT NOT NULL,
+    FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE CASCADE,
+    FOREIGN KEY (question_id) REFERENCES questions(id) ON DELETE CASCADE,
+    PRIMARY KEY (quiz_id, question_id)
+);
